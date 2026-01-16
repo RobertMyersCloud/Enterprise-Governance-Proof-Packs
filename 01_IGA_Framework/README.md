@@ -1,5 +1,5 @@
 # 🏛️ 01 — Identity Governance (IGA)
-**Status:** Active • **Audience:** Recruiters/Hiring Managers/Auditors • **Scope:** Entra ID (Azure-first)
+> **Status:** Active • **Audience:** Recruiters/Hiring Managers/Auditors • **Scope:** Entra ID (Azure-first)
 
 ---
 
@@ -14,7 +14,7 @@ This pillar contains proof packs demonstrating lifecycle control (JML), access a
 - [RBAC Least Privilege Map](./RBAC_Least_Privilege_Map.md)
 
 ## Evidence
-- Evidence Index: `./evidence/evidence-index.md`
+- Evidence Index: [`./evidence/evidence-index.md`](./evidence/evidence-index.md)
 
 ---
 
