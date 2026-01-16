@@ -1,5 +1,9 @@
+<div align="center">
+  
 # 🛡️ Enterprise Governance Proof Packs
 **Robert Myers, MBA | Senior Identity Governance Leader**
+
+</div>
 
 <div align="center">
 
@@ -29,25 +33,25 @@ My approach is evidence-driven: **governance is only real when it can be verifie
 
 ### 🏛️ 01. Identity Governance (IGA)
 > *Focus: automating the human supply chain and enforcing least privilege.*
-- [⭐ JML Workflow Pack](./01_IGA_Framework/JML_Lifecycle_Workflow.md)
-- [⭐ Access Reviews Pack](./01_IGA_Framework/Access_Review_SOP.md)
-- [⭐ Conditional Access Baseline](./01_IGA_Framework/Conditional_Access_Baseline.md)
-- [⭐ PIM Governance Pack](./01_IGA_Framework/PIM_Governance_Model.md)
-- [⭐ RBAC Model Pack](./01_IGA_Framework/RBAC_Least_Privilege_Map.md)
+- ⭐ **[JML Workflow Pack](./01_IGA_Framework/JML_Lifecycle_Workflow.md)**
+- ⭐ **[Access Reviews Pack](./01_IGA_Framework/Access_Review_SOP.md)**
+- ⭐ **[Conditional Access Baseline](./01_IGA_Framework/Conditional_Access_Baseline.md)**
+- ⭐ **[PIM Governance Pack](./01_IGA_Framework/PIM_Governance_Model.md)**
+- ⭐ **[RBAC Model Pack](./01_IGA_Framework/RBAC_Least_Privilege_Map.md)**
 
 ### 🛡️ 02. Cloud Security Engineering
 > *Focus: technical guardrails and policy enforcement.*
-- [⭐ Defender for Cloud Baseline + Remediation Tracker](./02_Cloud_Guardrails/Defender_Remediation_Plan.md)
-- [⭐ Azure Policy Guardrails (5 controls + compliance evidence)](./02_Cloud_Guardrails/policies/)
-- [⭐ Logging Baseline (workspace + retention + alert validation)](./02_Cloud_Guardrails/Logging_KQL_Library.md)
-- [⭐ Key Vault Access Pack (RBAC + secret access proof)](./02_Cloud_Guardrails/KeyVault_RBAC_Security.md)
+- ⭐ **[Defender for Cloud Baseline + Remediation Tracker](./02_Cloud_Guardrails/Defender_Remediation_Plan.md)**
+- ⭐ **[Azure Policy Guardrails (5 controls + compliance evidence)](./02_Cloud_Guardrails/policies/)**
+- ⭐ **[Logging Baseline (workspace + retention + alert validation)](./02_Cloud_Guardrails/Logging_KQL_Library.md)**
+- ⭐ **[Key Vault Access Pack (RBAC + secret access proof)](./02_Cloud_Guardrails/KeyVault_RBAC_Security.md)**
 
 ### 💹 03. FinOps & Accountability
 > *Focus: financial guardrails and cost governance.*
-- [⭐ Tag + Allocation Standard (cost center/app/owner)](./03_FinOps_Governance/Tagging_Allocation_Standard.md)
-- [⭐ Budgets + Alerts Pack (per team)](./03_FinOps_Governance/Budget_Alert_Thresholds.md)
-- [⭐ Showback Template + Forecast vs Actual](./03_FinOps_Governance/Monthly_Showback_Template.md)
-- [⭐ 2 Savings Cases (rightsizing + storage tiering)](./03_FinOps_Governance/Savings_Cases.md)
+- ⭐ **[Tag + Allocation Standard (cost center/app/owner)](./03_FinOps_Governance/Tagging_Allocation_Standard.md)**
+- ⭐ **[Budgets + Alerts Pack (per team)](./03_FinOps_Governance/Budget_Alert_Thresholds.md)**
+- ⭐ **[Showback Template + Forecast vs Actual](./03_FinOps_Governance/Monthly_Showback_Template.md)**
+- ⭐ **[2 Savings Cases (rightsizing + storage tiering)](./03_FinOps_Governance/Savings_Cases.md)**
 
 ---
 
