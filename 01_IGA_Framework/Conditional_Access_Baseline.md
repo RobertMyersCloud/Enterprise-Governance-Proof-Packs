@@ -1,97 +1,161 @@
-# ⭐ Conditional Access Baseline (MFA + Break-Glass + Exceptions)
-> **Status:** DRAFT • **Audience:** Recruiters/Hiring Managers/Auditors • **Scope:** Entra ID (Azure-first) • **Change policy:** IMMUTABLE once COMPLETE
+# Conditional Access Baseline (MFA + Break-Glass + Exceptions)
+
+![Status: DRAFT](https://img.shields.io/badge/Status-DRAFT-6c757d?style=for-the-badge)
+![Framework: NIST 800-53](https://img.shields.io/badge/Framework-NIST%20800--53-0d6efd?style=for-the-badge)
+![Audience: Recruiters/Auditors](https://img.shields.io/badge/Audience-Recruiters%20%2F%20Auditors-212529?style=for-the-badge)
+
+> [!IMPORTANT]
+> **Governance Change Policy:** Once marked **COMPLETE**, this baseline is **IMMUTABLE**. Deviations require a documented **Risk Acceptance (RA)** and entry into the **Exception Register**.
 
 ---
 
-## Goal
-Establish a defensible Conditional Access (CA) baseline that enforces MFA for interactive users, protects privileged access paths, and defines controlled exceptions (including break-glass accounts) without weakening the identity perimeter.
+## Strategic Goal
+Establish a defensible Conditional Access (CA) baseline that enforces strong authentication for interactive users, protects privileged identity paths, and governs exceptions explicitly—without introducing hidden bypasses or operational fragility.
 
-## What this proves
-- I can design and document a CA baseline that is **operationally deployable** and **audit-reviewable**.
-- I understand **identity attack paths** (legacy auth, risky sign-in, admin roles) and implement controls that reduce blast radius.
-- I can define **exception handling** that is explicit, time-bound, and reviewable (no “forever exclusions”).
+This baseline is designed to withstand real-world identity attack patterns and formal audit review.
+
+---
+
+## Visual Logic (Decision Flow)
+```mermaid
+graph TD
+  A[Sign-in Attempt] --> B{Break glass account?}
+  B -- Yes --> C[Emergency access path]
+  B -- No --> D{Legacy auth?}
+  D -- Yes --> E[BLOCK]
+  D -- No --> F{Privileged sign in?}
+  F -- Yes --> G[Require MFA strict]
+  F -- No --> H[Require MFA]
+  E --> I[Log and investigate]
+  G --> J[Access granted]
+  H --> J[Access granted]
+  C --> K[Log high severity alert]
+```
+
+---
+
+## Governance Decisions
+- Break-glass accounts are excluded only from the global MFA policy to preserve emergency access without broad CA bypass.
+- Legacy authentication is blocked tenant-wide to eliminate downgrade paths; exceptions require risk acceptance and an expiration date.
+- Privileged roles are treated as high-consequence identities and receive stricter enforcement.
+- Exceptions are temporary risk decisions with explicit owner and sunset date.
+
+---
+
+## Scope & Non-Goals
+| In scope | Out of scope (by design) |
+| --- | --- |
+| Interactive user authentication | Device compliance enforcement (requires managed endpoint baseline) |
+| Privileged role sign-ins | Continuous access evaluation tuning |
+| Emergency access governance | App-level sign-in risk policies requiring premium telemetry |
+| Exception documentation + review |  |
+
+---
 
 ## Operating Baseline
-**Assumptions (enterprise default):**
-- Tenant has Microsoft Entra ID with Conditional Access available.
-- MFA is supported via Microsoft Authenticator / FIDO2 / OTP (org choice).
-- At least two emergency access (“break-glass”) accounts exist and are stored with controlled access.
-- Administrative roles use separate admin accounts (where possible).
+| Item | Standard |
+| --- | --- |
+| Tenant | Entra ID with Conditional Access |
+| MFA | Approved method(s) defined by org |
+| Emergency access | Two break-glass accounts |
+| Admin identities | Separate admin identities where feasible |
 
-**Baseline objective:**
-- Default-deny risky patterns, require MFA for normal access, and require stronger controls for privileged operations.
+**Baseline objective**
+- Enforce MFA where it matters
+- Eliminate legacy auth
+- Reduce blast radius of privileged compromise
+- Make all exceptions visible, reviewable, and reversible
 
-## Design
-### Policy set (minimal baseline)
-| Policy | Target | Control | Key settings |
+---
+
+## Policy Set (Design)
+
+### Primary Controls
+| Policy ID | Policy Name | Target | Grant Control |
 | --- | --- | --- | --- |
-| CA-01 Require MFA (All Users) | All users | Require MFA | Exclude break-glass only |
-| CA-02 Block Legacy Auth | All users | Block | Legacy auth clients |
-| CA-03 Require MFA for Admin Roles | Directory roles | Require MFA | Stronger enforcement for privileged identities |
-| CA-04 Require Compliant Device (Optional) | High-risk apps | Require compliant device | Use only if device mgmt exists |
-| CA-05 Risk-based Sign-in (Optional) | All users | Require MFA / block | If risk signals available |
+| CA-01 | Require MFA – All Users | All Users | Require MFA |
+| CA-02 | Block Legacy Authentication | All Users | Block |
+| CA-03 | Privileged Role Protection | Directory Roles | Require MFA (Strict) |
 
-### Exception model
-**Allowed exception types**
-- Break-glass accounts (emergency only)
-- Service accounts / automation identities (prefer workload identities)
-- Vendor/partner access (prefer B2B + scoped access)
+> [!TIP]
+> Implement CA-02 in **Report-only** mode for a short validation window to identify legacy dependencies before enforcement.
 
-**Exception rules**
-- Must be documented (who, why, scope, expiry)
-- Must be time-bound
-- Must be reviewed periodically (access review cadence)
+### Exception Model
+- **Permitted types:** break-glass emergency accounts, service/automation identities (prefer workload identities), scoped B2B partners.
+- **Hard requirements:** documented justification, explicit owner, explicit scope, mandatory expiration/review date.
+
+---
 
 ## Steps I take (only what matters)
-1) **Create/validate break-glass accounts**
-   - Ensure 2 accounts, unique strong credentials, stored securely.
-   - Exclude from CA-01 only (not broadly excluded).
+1. Validate emergency access
+   - Confirm two break-glass accounts exist
+   - Secure credentials offline
+   - Exclude from CA-01 only
 
-2) **Implement CA-01: Require MFA for all users**
-   - Include: All users
-   - Exclude: Break-glass accounts only
-   - Grant: Require MFA
-   - Session: Keep defaults unless business requires changes
+2. Implement CA-01 (Require MFA – All Users)
+   - Include: all users
+   - Exclude: break-glass only
+   - Grant: require MFA
 
-3) **Implement CA-02: Block legacy authentication**
-   - Include: All users
-   - Client apps: Other clients / legacy authentication
-   - Access: Block
+3. Implement CA-02 (Block legacy authentication)
+   - Implement in Report-only for a short validation window
+   - Move to Enforced once dependencies are remediated
 
-4) **Implement CA-03: Protect privileged roles**
-   - Target: Directory roles (admin roles)
-   - Require MFA (and optionally require trusted locations/compliant device if available)
+4. Implement CA-03 (Privileged role protection)
+   - Target: directory roles
+   - Require MFA consistently for privileged sign-ins
 
-5) **Define exception register**
-   - Document any exclusions beyond break-glass (should be rare)
-   - Record: owner, justification, affected apps/users, expiry date, reviewer
+5. Establish exception register
+   - Record owner, justification, scope, expiration
+   - Align with access review cadence
+
+---
+
+## Audit Tests
+
+### Test of Design
+- [ ] Policies exist, are enabled, and match documented scope/exclusions.
+- [ ] Break-glass accounts are the only global MFA exclusions.
+- [ ] Targeting is complete (e.g., all cloud apps where applicable).
+
+### Test of Effectiveness
+- [ ] Sign-in logs show MFA enforced for interactive access.
+- [ ] Legacy authentication attempts are blocked.
+- [ ] Privileged role sign-ins require MFA consistently.
+- [ ] Break-glass sign-ins trigger a high-severity alert (if alerting is configured).
+
+---
 
 ## Verification
-### Expected
-- Normal users are prompted for MFA during interactive sign-in.
-- Legacy auth attempts are blocked.
-- Privileged role sign-ins are consistently protected with MFA.
-- Break-glass accounts can sign in (for emergency only) and are not used day-to-day.
 
-### Observed
-- (To be captured during implementation)
+**Expected**
+- MFA prompts occur for interactive sign-ins.
+- Legacy authentication attempts show blocked outcomes.
+- Privileged sign-ins consistently require MFA.
+- Break-glass accounts are used only for emergencies and generate high-signal logging.
+
+**Observed**
+- To be captured during implementation and retained in Evidence.
+
+---
 
 ## Evidence
-- Evidence Index: [`./evidence/evidence-index.md`](./evidence/evidence-index.md)
+Evidence Index: [`./evidence/evidence-index.md`](./evidence/evidence-index.md)
 
-**Evidence we will capture (minimum):**
-- Screenshot of CA policy list showing CA-01/02/03 enabled
-- Screenshot of CA-01 config (include/exclude)
-- Screenshot of legacy auth block settings
-- Sign-in logs showing MFA requirement applied
-- Exception register entry (if any exclusions exist)
+Minimum evidence artifacts:
+- EV-YYYY-MM-DD-001 — CA policy list (enabled)
+- EV-YYYY-MM-DD-002 — CA-01 config (MFA + break-glass exclusion)
+- EV-YYYY-MM-DD-003 — CA-02 legacy auth (report-only → enforce)
+- EV-YYYY-MM-DD-004 — Sign-in logs showing MFA applied
 
-## Controls mapped
-- **NIST 800-53:** AC-2, AC-6, IA-2, IA-5, AU-2, AU-12
+---
+
+## Controls Mapped
+- NIST 800-53: AC-2, AC-6, IA-2, IA-5, AU-2, AU-12
 
 ---
 
 ## Navigation
 - Repo README: [Home](../README.md)
-- Pillar README: [01 — IGA](./README.md)
+- Pillar README: [01 — Identity Governance](./README.md)
 - Strategy Wrapper: [04 — Strategy](../04_Strategy_Risk_Resilience/README.md)
