@@ -28,17 +28,20 @@ See: `SCREENSHOT_NAMING_STANDARD.md`
 
 ### Conditional Access Baseline (MFA + Break-Glass + Exceptions)
 
+**Pack:** [`../Conditional_Access_Baseline.md`](../Conditional_Access_Baseline.md)  
+**Exception Register:** [`../../EXCEPTION_REGISTER.md`](../../EXCEPTION_REGISTER.md)
+
 | Evidence ID | Artifact | What it proves |
 | --- | --- | --- |
-| EV-2026-01-17-001 | `EV-2026-01-17-001_ca_license_gate.png` | Conditional Access policy creation is license-gated (no Entra ID Premium) |
-| EV-2026-01-17-002 | `EV-2026-01-17-002_security_defaults_enabled.png` | Security Defaults are enabled (baseline MFA posture) |
-| EV-2026-01-17-003 | `EV-2026-01-17-003_auth_methods_policy.png` | Authentication Methods Policy is configured (method governance) |
-| EV-2026-01-17-004 | `EV-2026-01-17-004_breakglass_accounts_exist.png` | Two break-glass accounts exist (emergency access path) |
-| EV-2026-01-17-005 | `EV-2026-01-17-005_breakglass_global_admin.png` | Break-glass accounts have privileged role assignment (Global Admin) |
-| EV-2026-01-17-006 | `EV-2026-01-17-006_signin_visibility_basic.png` | Sign-in logs are available and reviewable |
-| EV-2026-01-17-007 | `EV-2026-01-17-007_mfa_registration_report.png` | MFA registration reporting is premium-gated (documented constraint) |
-| EV-2026-01-17-008 | `EV-2026-01-17-008_user_authentication_methods.png` | User authentication methods exist; TAP present (operational capability) |
-| EV-2026-01-17-009 | `EV-2026-01-17-009_signin_event_auth_details_mfa.png` | MFA enforcement state observable in sign-in telemetry |
+| EV-2026-01-17-001 | [`EV-2026-01-17-001_ca_license_gate.png`](./EV-2026-01-17-001_ca_license_gate.png) | Conditional Access policy creation is license-gated (no Entra ID Premium) |
+| EV-2026-01-17-002 | [`EV-2026-01-17-002_security_defaults_enabled.png`](./EV-2026-01-17-002_security_defaults_enabled.png) | Security Defaults are enabled (baseline MFA posture) |
+| EV-2026-01-17-003 | [`EV-2026-01-17-003_auth_methods_policy.png`](./EV-2026-01-17-003_auth_methods_policy.png) | Authentication Methods Policy is configured (method governance) |
+| EV-2026-01-17-004 | [`EV-2026-01-17-004_breakglass_accounts_exist.png`](./EV-2026-01-17-004_breakglass_accounts_exist.png) | Two break-glass accounts exist (emergency access path) |
+| EV-2026-01-17-005 | [`EV-2026-01-17-005_breakglass_global_admin.png`](./EV-2026-01-17-005_breakglass_global_admin.png) | Break-glass accounts have privileged role assignment (Global Admin) |
+| EV-2026-01-17-006 | [`EV-2026-01-17-006_signin_visibility_basic.png`](./EV-2026-01-17-006_signin_visibility_basic.png) | Sign-in logs are available and reviewable |
+| EV-2026-01-17-007 | [`EV-2026-01-17-007_mfa_registration_report.png`](./EV-2026-01-17-007_mfa_registration_report.png) | MFA registration reporting is premium-gated (documented constraint) |
+| EV-2026-01-17-008 | [`EV-2026-01-17-008_user_authentication_methods.png`](./EV-2026-01-17-008_user_authentication_methods.png) | User authentication methods exist; TAP present (operational capability) |
+| EV-2026-01-17-009 | [`EV-2026-01-17-009_signin_event_auth_details_mfa.png`](./EV-2026-01-17-009_signin_event_auth_details_mfa.png) | MFA enforcement state observable in sign-in telemetry |
 
 ---
 
