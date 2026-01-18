@@ -1,27 +1,59 @@
-# Exception Register (Risk Acceptance)
+# Exception Register
 
-![Status: DRAFT](https://img.shields.io/badge/Status-DRAFT-6c757d?style=for-the-badge)
-![Audience: Recruiters/Auditors](https://img.shields.io/badge/Audience-Recruiters%20%2F%20Auditors-212529?style=for-the-badge)
-
-> [!IMPORTANT]
-> **Governance Change Policy:** Exceptions are **temporary risk decisions**, not permanent shortcuts. Every exception requires an owner, approver, and expiration date.
+![Status: ACTIVE](https://img.shields.io/badge/Status-ACTIVE-0d6efd?style=for-the-badge)
 
 ---
 
 ## Purpose
-Central record of governance exceptions across proof packs. Exceptions must be explicitly approved, time-bound, and evidenced.
+This register documents **approved deviations** from IMMUTABLE governance baselines.  
+Any exception **must be time-bound, justified, and reviewed**.
+
+No exception may be implemented without:
+- documented risk acceptance
+- explicit scope
+- expiration date
 
 ---
 
-## Exception Log
-
-| RA ID | Date | Pack | Exception | Justification | Owner | Approval | Expiration | Status | Evidence |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| RA-YYYY-### | YYYY-MM-DD | Pack name | What deviates | Why required | owner@ | Approver role/name | YYYY-MM-DD | Active/Expired | Link |
+## Exception Policy
+- All IMMUTABLE baselines require a Risk Acceptance (RA) for deviation
+- Exceptions **must expire**
+- Emergency use does **not** waive documentation
 
 ---
 
-## Rules
-- Every exception includes scope, owner, approval, expiration, and evidence link.
-- No indefinite exceptions.
-- Expired exceptions must be closed (control restored) or renewed with a new RA entry.
+## Active Exceptions
+
+> **None**
+
+As of the last review, there are **no approved exceptions** to Identity Governance baselines.
+
+---
+
+## Recorded Constraints (Non-Exception)
+
+The following are **documented environmental constraints**, not exceptions:
+
+| Area | Description | Handling |
+| --- | --- | --- |
+| Conditional Access | Entra ID Premium licensing not present | Baseline implemented using Security Defaults + Auth Methods Policy |
+| MFA Reporting | Advanced MFA registration reporting premium-gated | Constraint documented with evidence |
+| CA Targeting | Risk / device / app-based CA unavailable | Explicitly declared out-of-scope |
+
+These constraints are **not treated as exceptions** because:
+- They do not bypass controls
+- They are transparently documented
+- No compensating controls are misrepresented
+
+---
+
+## Review Cadence
+- Reviewed quarterly
+- Reviewed after any baseline change request
+- Reviewed after emergency access usage
+
+---
+
+## Navigation
+- Identity Governance Evidence: `./01_IGA_Framework/evidence/evidence-index.md`
+- Conditional Access Baseline: `./01_IGA_Framework/Conditional_Access_Baseline.md`
