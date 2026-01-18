@@ -1,12 +1,12 @@
 # Conditional Access Baseline (MFA + Break-Glass + Exceptions)
 
-![Status: COMPLETE](https://img.shields.io/badge/Status-COMPLETE-success?style=for-the-badge)
+![Status: COMPLETE](https://img.shields.io/badge/Status-COMPLETE-198754?style=for-the-badge)
+![Change Policy: IMMUTABLE](https://img.shields.io/badge/Change%20Policy-IMMUTABLE-212529?style=for-the-badge)
 ![Framework: NIST 800-53](https://img.shields.io/badge/Framework-NIST%20800--53-0d6efd?style=for-the-badge)
 ![Audience: Recruiters/Auditors](https://img.shields.io/badge/Audience-Recruiters%20%2F%20Auditors-212529?style=for-the-badge)
 
 > [!IMPORTANT]
-> **Governance Change Policy:** This baseline is **IMMUTABLE**. Any deviation requires a documented **Risk Acceptance (RA)** and entry into the **Exception Register** (`/EXCEPTION_REGISTER.md`).  
-> **Tenant constraint:** Conditional Access policy creation is **license-gated** in this tenant. This baseline is implemented using Security Defaults + Authentication Methods Policy, with evidence retained.
+> **Governance Change Policy:** This baseline is **IMMUTABLE**. Deviations require a documented **Risk Acceptance (RA)** and entry into the **Exception Register** (`/EXCEPTION_REGISTER.md`).
 
 ---
 
@@ -24,7 +24,7 @@ This baseline is designed to withstand real-world identity attack patterns and f
 ## Licensing Constraint (Current Tenant State)
 This tenant does not have sufficient Microsoft Entra ID Premium licensing to create **Conditional Access** policies.
 
-**Therefore, the baseline is implemented using:**
+**Therefore, this baseline is implemented using:**
 - **Security Defaults** (baseline MFA posture + recommended protections)
 - **Authentication Methods Policy** (method governance)
 - **Break-glass accounts** (emergency access governance)
@@ -38,8 +38,8 @@ Conditional Access policy-level targeting (cloud apps, device platform condition
 ## What This Proves
 - I treat authentication enforcement as a **governance control**, not a UI configuration.
 - I preserve emergency access while preventing broad bypass patterns.
-- I can document a baseline under licensing constraints without overstating capabilities.
-- I can produce evidence suitable for **test of design** and **test of effectiveness**.
+- I document a baseline under licensing constraints **without overstating capabilities**.
+- I produce evidence suitable for **test of design** and **test of effectiveness**.
 
 ---
 
@@ -74,48 +74,62 @@ Conditional Access policy-level targeting (cloud apps, device platform condition
 
 ---
 
+## Visual Logic (Decision Flow)
+
+```mermaid
+flowchart TD
+  A[Sign-in attempt] --> B{Break-glass account?}
+  B -- Yes --> C[Emergency access path]
+  B -- No --> D{Security Defaults enabled?}
+  D -- Yes --> E[Baseline MFA enforced where applicable]
+  D -- No --> F[Defect: baseline not enforced]
+  C --> G[Log + high-severity review]
+  E --> H[Access granted]
+  F --> I[Remediate + document RA if needed]
+```
+
+---
+
 ## Control Set (Design)
 | Control Area | Baseline Control | Implementation (this tenant) |
 | --- | --- | --- |
 | MFA enforcement | Require MFA for interactive sign-ins where applicable | Security Defaults |
 | Emergency access | Maintain controlled break-glass path | Two break-glass accounts + governance rules |
-| Method governance | Restrict MFA / auth methods | Authentication Methods Policy |
-| Verification | Prove enforcement is observable | Sign-in logs + auth details |
+| Method governance | Restrict/approve authentication methods | Authentication Methods Policy |
+| Verification | Prove enforcement is observable | Sign-in logs + authentication details |
 
 ---
 
 ## Audit Tests
 
-### Test of Design
-- [x] Evidence that Conditional Access policy creation is license-gated (no Premium).
-- [x] Security Defaults state documented (enabled).
-- [x] Authentication Methods Policy configured and recorded.
+### Test of Design (control exists as designed)
+- [x] Evidence that Conditional Access policy creation is license-gated (no Entra ID Premium).
+- [x] Security Defaults status is visible and enabled.
+- [x] Authentication Methods Policy exists and is configured.
 - [x] Two break-glass accounts exist and are identifiable.
-- [x] Break-glass accounts have privileged role assignment documented.
+- [x] Break-glass accounts have privileged assignment documented.
 
-### Test of Effectiveness
+### Test of Effectiveness (control works in practice)
 - [x] Interactive sign-ins are captured in Entra sign-in logs.
-- [x] Authentication enforcement state is observable in sign-in “Authentication Details.”
-- [x] “Previously satisfied” MFA is acceptable under Security Defaults due to token/session reuse; this is expected behavior in non-CA tenants.
-- [ ] Break-glass sign-in triggers an operational review (manual, until SIEM alerting is implemented in Logging Baseline).
+- [x] Authentication enforcement is observable in sign-in “Authentication Details”.
+- [x] “Previously satisfied” / MFA state is observable (expected in non-CA tenants depending on session + method).
+- [x] Break-glass usage is reviewable via sign-in telemetry (manual review in this tenant; SIEM alerting is handled in Logging Baseline pack).
 
 ---
 
 ## Evidence (linked)
 
-> Evidence index: [`01_IGA_Framework/evidence/evidence-index.md`](./evidence/evidence-index.md)
-
-| Evidence ID | Artifact | Purpose |
+| Evidence ID | Artifact | What it proves |
 | --- | --- | --- |
-| EV-2026-01-17-001 | [CA license gate](./evidence/EV-2026-01-17-001_ca_license_gate.png) | Proves CA policy creation is license-gated |
-| EV-2026-01-17-002 | [Security Defaults enabled](./evidence/EV-2026-01-17-002_security_defaults_enabled.png) | Proves baseline enforcement mechanism is enabled |
-| EV-2026-01-17-003 | [Authentication Methods Policy](./evidence/EV-2026-01-17-003_auth_methods_policy.png) | Proves method governance exists |
-| EV-2026-01-17-004 | [Break-glass accounts exist](./evidence/EV-2026-01-17-004_breakglass_accounts_exist.png) | Proves emergency identities exist |
-| EV-2026-01-17-005 | [Break-glass Global Admin assignment](./evidence/EV-2026-01-17-005_breakglass_global_admin.png) | Proves emergency identities are privileged |
-| EV-2026-01-17-006 | [Sign-in logs visibility](./evidence/EV-2026-01-17-006_signin_visibility_basic.png) | Proves sign-in telemetry is available |
-| EV-2026-01-17-007 | [MFA registration report access (license gate)](./evidence/EV-2026-01-17-007_mfa_registration_report.png) | Proves premium feature constraint for reporting |
-| EV-2026-01-17-008 | [User authentication methods](./evidence/EV-2026-01-17-008_user_authentication_methods.png) | Proves usable methods exist / TAP present |
-| EV-2026-01-17-009 | [Sign-in event authentication details](./evidence/EV-2026-01-17-009_signin_event_auth_details_mfa.png) | Proves enforcement state is observable (“Previously satisfied”) |
+| EV-2026-01-17-001 | [CA license gate](./evidence/EV-2026-01-17-001_ca_license_gate.png) | Conditional Access policy creation is license-gated (no Entra ID Premium) |
+| EV-2026-01-17-002 | [Security Defaults enabled](./evidence/EV-2026-01-17-002_security_defaults_enabled.png) | Baseline MFA posture is enabled via Security Defaults |
+| EV-2026-01-17-003 | [Authentication Methods Policy](./evidence/EV-2026-01-17-003_auth_methods_policy.png) | Method governance exists and is configurable |
+| EV-2026-01-17-004 | [Break-glass accounts exist](./evidence/EV-2026-01-17-004_breakglass_accounts_exist.png) | Two break-glass identities exist (emergency access path) |
+| EV-2026-01-17-005 | [Break-glass Global Admin assignment](./evidence/EV-2026-01-17-005_breakglass_global_admin.png) | Break-glass identities are privileged (directory-level) |
+| EV-2026-01-17-006 | [Sign-in log visibility](./evidence/EV-2026-01-17-006_signin_visibility_basic.png) | Sign-in logs are available and reviewable |
+| EV-2026-01-17-007 | [MFA registration reporting gate](./evidence/EV-2026-01-17-007_mfa_registration_report.png) | MFA registration reporting is premium-gated (documented constraint) |
+| EV-2026-01-17-008 | [User authentication methods](./evidence/EV-2026-01-17-008_user_authentication_methods.png) | MFA-related methods exist; TAP presence shows operational capability |
+| EV-2026-01-17-009 | [Sign-in authentication details](./evidence/EV-2026-01-17-009_signin_event_auth_details_mfa.png) | Enforcement state is observable in telemetry (“Previously satisfied” / auth details) |
 
 ---
 
@@ -124,20 +138,20 @@ Any exception (e.g., disabling Security Defaults, adding unusual auth methods, b
 - documented justification
 - explicit scope (who/what)
 - expiration date
-- entry into [`/EXCEPTION_REGISTER.md`](/EXCEPTION_REGISTER.md)
+- entry into: `/EXCEPTION_REGISTER.md`
 
 ---
 
 ## Controls Mapped (NIST 800-53)
-- **IA-2** (Identification and Authentication)  
-- **AC-2** (Account Management)  
-- **AC-6** (Least Privilege)  
-- **AU-2 / AU-12** (Audit Events / Audit Record Generation)  
+- IA-2 (Identification and Authentication)
+- AC-2 (Account Management)
+- AC-6 (Least Privilege)
+- AU-2 / AU-12 (Audit Events / Audit Record Generation)
 
 ---
 
 ## Navigation
-- Repo: [`README.md`](/README.md)
-- Pillar: [`01_IGA_Framework/README.md`](./README.md)
-- Evidence index: [`01_IGA_Framework/evidence/evidence-index.md`](./evidence/evidence-index.md)
-- Exception register: [`/EXCEPTION_REGISTER.md`](/EXCEPTION_REGISTER.md)
+- Repo README: `../README.md`
+- Pillar README: `./README.md`
+- Evidence index: `./evidence/evidence-index.md`
+- Exception register: `../EXCEPTION_REGISTER.md`
