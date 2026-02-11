@@ -16,7 +16,7 @@ If you believe you have found:
 Please report it responsibly.
 
 **Contact:**  
-Email: security [at] robertmyers.cloud *(or update to your preferred contact)*
+Email: robert@rmyers.cloud
 
 ---
 
